@@ -23,17 +23,6 @@ variable "ssh_private_key" {}
 # The defaults here will give you a cluster.  You can also modify these.
 # ---------------------------------------------------------------------------------------------------------------------
 
-variable "worker" {
-  type = "map"
-
-  default = {
-    shape      = "VM.GPU2.1"
-    core_count = 3
-
-    # username = "admin"
-    password = "admin"
-  }
-}
 
 variable "worker" {
   type = "map"

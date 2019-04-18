@@ -20,15 +20,13 @@ resource "oci_core_instance" "worker" {
 
     user_data = "${base64encode(join("\n", list(
       "#!/usr/bin/env bash",
-      "password=${var.core["password"]}",
+      "password=${var.worker["password"]}",
       file("../scripts/worker.sh")
     )))}"
   }
 
   freeform_tags = {
     "Quickstart" = "{\"Deployment\":\"TF\", \"Publisher\":\"Kinetica\", \"Offer\":\"kinetica\",\"Licence\":\"byol\"}"
-
-    "otherTagKey" = "otherTagVal"
   }
 
   count = "${var.worker["worker_count"]}"
