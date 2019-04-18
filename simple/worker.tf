@@ -26,7 +26,7 @@ resource "oci_core_instance" "worker" {
   }
 
   freeform_tags = {
-    "Quickstart" = "{\"Deployment\":\"TF\", \"Publisher\":\"Kinetica\", \"Offer\":\"kinetica\",\"Licence\":\"byol\"}"
+    "quick-start" = "{\"Deployment\":\"TF\", \"Publisher\":\"Kinetica\", \"Offer\":\"kinetica\",\"Licence\":\"byol\"}"
   }
 
   count = "${var.worker["worker_count"]}"
