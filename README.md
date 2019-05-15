@@ -10,6 +10,7 @@ Now, you'll want a local copy of this repo by running:
 git clone https://github.com/oci-quickstart/oci-kinetica.git
 ```
 
+## Deploy
 The TF templates here can be deployed by running the following commands:
 ```
 cd oci-kinetica/simple
