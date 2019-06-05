@@ -26,6 +26,15 @@ chown -R gpudb:gpudb /data/gpudb
 # Exit early here if not first/head node?
 #
 
+if [ $(hostname) != "kinetica-worker-0" ]
+then
+   echo "Not running on head node, starting host manager, exiting early"
+   systemctl enable gpudb_host_manager
+   systemctl start gpudb_host_manager
+   exit 0
+fi
+
+
 echo "Changing gpudb.conf"
 GPUDB_CONF_FILE="/opt/gpudb/core/etc/gpudb.conf"
 GPUDB_HOSTS_FILE="/opt/gpudb/core/etc/hostsfile"
