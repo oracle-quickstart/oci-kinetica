@@ -70,36 +70,50 @@ echo "Found the following number of GPUS: $NUM_GPU"
 echo "Loop over hostnames"
 for i in "${HOST_NAMES[@]}"; do
   echo "Hostname: $i"
-  #Set rank0 IP to internal hostname
+  ip=$(host $i | awk '/has address/ { print $4 }')
+  echo "IP: $ip"
 
   if [ $NODECOUNTER -eq 0 ]
   then
-   sed -i -E "s/rank0_ip_address =.*/rank0_ip_address = $i/g" $GPUDB_CONF_FILE
+    # Set rank0 IP to internal hostname
+   sed -i -E "s/rank0_ip_address =.*/rank0_ip_address = $ip/g" $GPUDB_CONF_FILE
+   # Start building RANK_HOSTS string
+   RANK_HOSTS='rank0.host = '$ip'\n'
   fi
+
   echo "Loop over available GPUs"
   for n in `seq 0 $((NUM_GPU-1))`; do
     echo "rank$RANKNUM.taskcalc_gpu = $n" >> $GPUDB_CONF_FILE
+    # Add each GPU rank to RANK_HOSTS
+    RANK_HOSTS+='rank'$RANKNUM'.host = '$ip'\n'
     RANKNUM=$RANKNUM+1
   done
 
-  #skip node 1 else add to hosts file
+  # Skip node 1 else add to hosts file
    if [ $NODECOUNTER -gt 0 ]
    then
-      echo "$i slots=$NUM_GPU max_slots=$NUM_GPU" >>"$GPUDB_HOSTS_FILE"
+      echo "$ip slots=$NUM_GPU max_slots=$NUM_GPU" >>"$GPUDB_HOSTS_FILE"
    else
       let FIRST_HOST_GPU=$NUM_GPU+1
-      echo "$i slots=$FIRST_HOST_GPU max_slots=$FIRST_HOST_GPU" >"$GPUDB_HOSTS_FILE"
+      echo "$ip slots=$FIRST_HOST_GPU max_slots=$FIRST_HOST_GPU" >"$GPUDB_HOSTS_FILE"
    fi
   NODECOUNTER=$NODECOUNTER+1
 done
 sed -i -E "s/number_of_ranks =.*/number_of_ranks = $RANKNUM/g" $GPUDB_CONF_FILE
 
+# Delete rankX.host defaults
+sed -i -E '/rank1.host = 127.0.0.1/d' $GPUDB_CONF_FILE
+sed -i -E '/rank2.host = 127.0.0.1/d' $GPUDB_CONF_FILE
+# Replace with built RANK_HOSTS
+sed -i -E "s~rank0.host = 127.0.0.1~${RANK_HOSTS}~g" $GPUDB_CONF_FILE
+
 #debug
 cp $GPUDB_CONF_FILE $GPUDB_CONF_FILE.mine
 
 # Start service
-echo "Starting service"
+echo "Starting services"
 systemctl enable gpudb_host_manager
 systemctl start gpudb_host_manager
-#sleep 10s
-#systemctl start gpudb_host_manager
+sleep 10s
+
+service gpudb start

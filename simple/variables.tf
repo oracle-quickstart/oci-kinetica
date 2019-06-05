@@ -32,10 +32,10 @@ variable "worker" {
   type = "map"
 
   default = {
-    shape      = "BM.GPU2.2"
+    shape      = "VM.GPU3.1"
     worker_count = 1
     # Which availability domain to deploy to depending on quota, zero based
-    ad_number = 1
+    ad_number = 2
   }
 }
 
@@ -65,10 +65,11 @@ variable "images" {
   type = "map"
 
   default = {
-    ca-toronto-1   = "ocid1.image.oc1.ca-toronto-1.aaaaaaaa2qu5d42l6wubijavqic26kspjyvi6kn25oiop4di633kcd6e4oeq"
-    eu-frankfurt-1 = "ocid1.image.oc1.eu-frankfurt-1.aaaaaaaafn5eqdsiraw5rhxfqbf7hizx5dhur4ffmvvpjtx7pew7nqdiux5q"
-    uk-london-1    = "ocid1.image.oc1.uk-london-1.aaaaaaaa4ra77q7sgfgtknxaeef34z2ezjqt6onv6akifberbibfwhpjddna"
-    us-ashburn-1   = "ocid1.image.oc1.iad.aaaaaaaamg5ew5ymoilp3r3pzgo4pcoajicqavjv7q5bnyd4tibggcwupula"
-    us-phoenix-1   = "ocid1.image.oc1.phx.aaaaaaaaiza335ab5niqcjscm5yithovegaxzsipmchrujez7gk4ij5pjqvq"
-  }
+    ap-seoul-1 =	"ocid1.image.oc1.ap-seoul-1.aaaaaaaaekhzdpa2oibo4cgh4whp54gv3sh5y277k7ykqvzcmm7f7xuujf7q"
+    ap-tokyo-1 =	"ocid1.image.oc1.ap-tokyo-1.aaaaaaaaqgxuylamck3u4z43lqhcjmk63mgmwle2kuxn7urcvs3zernbmidq"
+    ca-toronto-1 =	"ocid1.image.oc1.ca-toronto-1.aaaaaaaaao3hzbyh3nlcif672hnkarlbmaqk47woffzcgrlgt6xg5iffoy3a"
+    eu-frankfurt-1 = 	"ocid1.image.oc1.eu-frankfurt-1.aaaaaaaaeaa5m5ioxbrb3dstql2kzcuspidcvimey2lswpn5vasyxvoqpvxa"
+    uk-london-1 =	"ocid1.image.oc1.uk-london-1.aaaaaaaapsbpob5y3hodz2l2izyhluolrapfm2p66rzv4a2seqcehjjdgteq"
+    us-ashburn-1 =	"ocid1.image.oc1.iad.aaaaaaaaklskal5ezaay6imvl6iwzcelke5uavkt5smpla7o45g5xmcmv2da"
+    us-phoenix-1 =	"ocid1.image.oc1.phx.aaaaaaaal4eq2dujwuefgqxoz76jlxxtebyy6rtql7lopvkbp4z5j3ydut3q"
 }
