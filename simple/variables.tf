@@ -72,4 +72,5 @@ variable "images" {
     uk-london-1 =	"ocid1.image.oc1.uk-london-1.aaaaaaaapsbpob5y3hodz2l2izyhluolrapfm2p66rzv4a2seqcehjjdgteq"
     us-ashburn-1 =	"ocid1.image.oc1.iad.aaaaaaaaklskal5ezaay6imvl6iwzcelke5uavkt5smpla7o45g5xmcmv2da"
     us-phoenix-1 =	"ocid1.image.oc1.phx.aaaaaaaal4eq2dujwuefgqxoz76jlxxtebyy6rtql7lopvkbp4z5j3ydut3q"
+  }
 }
