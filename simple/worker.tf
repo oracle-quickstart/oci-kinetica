@@ -1,3 +1,9 @@
+locals {
+  # Used locally to determine the correct platform image. Shape names always
+  # start with either 'VM.'/'BM.' and all GPU shapes have 'GPU' as the next characters
+  shape_type = "${lower(substr(var.worker["shape"],3,3))}"
+}
+
 resource "oci_core_instance" "worker" {
   display_name        = "kinetica-worker-${count.index}"
   compartment_id      = "${var.compartment_ocid}"
@@ -6,7 +12,7 @@ resource "oci_core_instance" "worker" {
   subnet_id           = "${oci_core_subnet.subnet.id}"
 
   source_details {
-    source_id   = "${var.images[var.region]}"
+    source_id   = "${local.shape_type == "gpu" ? var.images["${var.region}-gpu"] : var.images[var.region]}"
     source_type = "image"
   }
 

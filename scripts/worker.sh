@@ -13,8 +13,19 @@ systemctl disable firewalld
 
 echo "Running yum install"
 wget -O /etc/yum.repos.d/kinetica-7.0.repo http://repo.kinetica.com/yum/7.0/CentOS/7/x86_64/kinetica-7.0.repo
-# cuda91 is correct for all GPU shapes as all GPUs are either V100/P100
-yum install -y gpudb-cuda91-license.x86_64
+
+if [[ $shape == *"GPU"* ]]; then
+  echo "Running on GPU shape, installing cuda build..."
+  # cuda91 is correct for all GPU shapes as all GPUs are either V100/P100
+  yum install -y gpudb-cuda91-license.x86_64
+  NUM_GPU=$(nvidia-smi -L | wc -l)
+  echo "Found the following number of GPUS: $NUM_GPU"
+else
+  echo "Running on non-GPU shape, installing intel build..."
+  yum install -y gpudb-intel-license.x86_64
+  NUM_NUMA=$(lscpu | awk -F":" '/^NUMA node\(s\)/ { print $2 }' | tr -d ' ')
+  echo "Found the following number of NUMA nodes: $NUM_NUMA"
+fi
 
 # create default persist dir
 # /data will be mount pt for block storage if it exists
@@ -73,8 +84,6 @@ sed -i -e :a -e '/^\n*$/{$d;N;};/\n$/ba' $GPUDB_CONF_FILE
 #Setup the rest
 declare -i RANKNUM=1
 declare -i NODECOUNTER=0
-NUM_GPU=$(nvidia-smi -L | wc -l)
-echo "Found the following number of GPUS: $NUM_GPU"
 
 echo "Loop over hostnames"
 for i in "${HOST_NAMES[@]}"; do
@@ -90,13 +99,26 @@ for i in "${HOST_NAMES[@]}"; do
    RANK_HOSTS='rank0.host = '$ip'\n'
   fi
 
-  echo "Loop over available GPUs"
-  for n in `seq 0 $((NUM_GPU-1))`; do
-    echo "rank$RANKNUM.taskcalc_gpu = $n" >> $GPUDB_CONF_FILE
-    # Add each GPU rank to RANK_HOSTS
-    RANK_HOSTS+='rank'$RANKNUM'.host = '$ip'\n'
-    RANKNUM=$RANKNUM+1
-  done
+  if [[ $shape == *"GPU"* ]]; then
+    echo "Running on GPU shape"
+    echo "Loop over available GPUs"
+    for n in `seq 0 $((NUM_GPU-1))`; do
+      echo "rank$RANKNUM.taskcalc_gpu = $n" >> $GPUDB_CONF_FILE
+      # Add each GPU rank to RANK_HOSTS
+      RANK_HOSTS+='rank'$RANKNUM'.host = '$ip'\n'
+      RANKNUM=$RANKNUM+1
+    done
+  else
+    echo "Running on non-GPU shape"
+    echo "Loop over NUMA nodes"
+    for n in `seq 0 $((NUM_NUMA-1))`; do
+      echo "rank$RANKNUM.base_numa_node = $n" >> $GPUDB_CONF_FILE
+      # Add each NUMA rank to RANK_HOSTS
+      RANK_HOSTS+='rank'$RANKNUM'.host = '$ip'\n'
+      RANKNUM=$RANKNUM+1
+    done
+  fi
+
 
   # Skip node 1 else add to hosts file
    if [ $NODECOUNTER -gt 0 ]
