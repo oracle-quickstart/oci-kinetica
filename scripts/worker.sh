@@ -45,6 +45,12 @@ then
    exit 0
 fi
 
+echo "Creating self-signed cert"
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 \
+ -keyout /opt/gpudb/core/etc/key.pem \
+ -out /opt/gpudb/core/etc/cert.pem
+chown gpudb:gpudb /opt/gpudb/core/etc/{key.pem,cert.pem}
+chmod 600 /opt/gpudb/core/etc/{key.pem,cert.pem}
 
 echo "Changing gpudb.conf"
 GPUDB_CONF_FILE="/opt/gpudb/core/etc/gpudb.conf"
@@ -65,6 +71,8 @@ sed -i -E "s/enable_caravel =.*/enable_caravel = ${ENABLE_CARAVEL}/g" $GPUDB_CON
 sed -i -E "s/enable_odbc_connector =.*/enable_odbc_connector = ${ENABLE_ODBC}/g" $GPUDB_CONF_FILE
 sed -i -E "s:persist_directory = .*:persist_directory = /data/gpudb/persist:g" $GPUDB_CONF_FILE
 sed -i -E "s:license_key =.*:license_key = ${LICENSE_KEY}:g" $GPUDB_CONF_FILE
+sed -i -E "s:https_key_file = .*:https_key_file =  /opt/gpudb/core/etc/key.pem:g" $GPUDB_CONF_FILE
+sed -i -E "s:https_cert_file = .*:https_cert_file = /opt/gpudb/core/etc/cert.pem:g" $GPUDB_CONF_FILE
 
 # Build hostname array
 worker_count=$(echo $json | jq -r '.metadata.config.worker_count')
