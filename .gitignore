@@ -7,3 +7,7 @@
 
 # .tfvars files
 *.tfvars
+
+*scratch*
+
+util/*.zip
