@@ -14,5 +14,5 @@ echo "$public_ip $private_ip $shape"
 
 echo $json | jq $CONFIG_LOCATION
 
-#for testing
-diskCount=0
+#diskCount used by disks.sh
+diskCount=$(echo $json | jq -r $CONFIG_LOCATION.disk_count)

@@ -25,7 +25,7 @@ variable "ssh_private_key" {}
 
 variable "license_key" {
   type = "string"
-  default = "RRUMDiqmYPph-F44W7KTppxH5-dd8aJF1LwpdH-m9rsHJWRJ0bo-wZcHIJgwrp8bgxVyTGkaZlTJzxCRv7VR"
+  default = ""
 }
 
 variable "worker" {
@@ -36,6 +36,9 @@ variable "worker" {
     worker_count = 1
     # Which availability domain to deploy to depending on quota, zero based
     ad_number = 2
+    # Number block volumes on each worker for persistence directory.
+    disk_count = 1
+    disk_size = 500
   }
 }
 
