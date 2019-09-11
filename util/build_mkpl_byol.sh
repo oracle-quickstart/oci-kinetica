@@ -30,14 +30,14 @@ echo "Adding $schema..."
 cp $schema ./tmp_package
 echo "Adding $variables..."
 cp $variables ./tmp_package
-echo "Adding image_subscription.tf..."
-cp image_subscription.tf ./tmp_package
+#echo "Adding image_subscription.tf..."
+#cp image_subscription.tf ./tmp_package
 
 # Required path change since schema.yaml forces working directory to be
 # root of .zip
-sed -i '' "s:file(\"../scripts/node.sh\"):file(\"./scripts/node.sh\"):g" ./tmp_package/worker.tf
-sed -i '' "s:file(\"../scripts/disks.sh\"):file(\"./scripts/node.sh\"):g" ./tmp_package/worker.tf
-sed -i '' "s:file(\"../scripts/metadata.sh\"):file(\"./scripts/node.sh\"):g" ./tmp_package/worker.tf
+sed -i '' "s:file(\"../scripts/worker.sh\"):file(\"./scripts/worker.sh\"):g" ./tmp_package/worker.tf
+sed -i '' "s:file(\"../scripts/disks.sh\"):file(\"./scripts/disks.sh\"):g" ./tmp_package/worker.tf
+sed -i '' "s:file(\"../scripts/metadata.sh\"):file(\"./scripts/metadata.sh\"):g" ./tmp_package/worker.tf
 
 # Add latest git log entry
 git log -n 1 > tmp_package/git.log

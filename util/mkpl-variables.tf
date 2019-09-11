@@ -19,6 +19,7 @@ variable "use_marketplace_image" {
 variable "tenancy_ocid" {}
 variable "compartment_ocid" {}
 variable "region" {}
+variable "ssh_public_key" {}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Optional variables
