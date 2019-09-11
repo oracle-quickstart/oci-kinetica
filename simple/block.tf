@@ -1,7 +1,7 @@
 
 resource "oci_core_volume" "WorkerVolume" {
   count               = "${var.worker_count * var.disk_count}"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[var.ad_number],"name")}"
+  availability_domain = "${local.ad}"
   compartment_id      = "${var.compartment_ocid}"
   display_name        = "worker-${count.index % var.worker_count}-volume${floor(count.index / var.worker_count)}"
   size_in_gbs         = "${var.disk_size}"

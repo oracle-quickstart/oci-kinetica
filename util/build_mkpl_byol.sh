@@ -30,8 +30,8 @@ echo "Adding $schema..."
 cp $schema ./tmp_package
 echo "Adding $variables..."
 cp $variables ./tmp_package
-#echo "Adding image_subscription.tf..."
-#cp image_subscription.tf ./tmp_package
+echo "Adding image_subscription.tf..."
+cp image_subscription.tf ./tmp_package
 
 # Required path change since schema.yaml forces working directory to be
 # root of .zip

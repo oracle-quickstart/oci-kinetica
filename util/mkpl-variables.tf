@@ -3,13 +3,13 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "mp_listing_id" {
-  default = ""
+  default = "ocid1.appcataloglisting.oc1..aaaaaaaalxpgjznatztyqaz2n4krqz5n6s7h5u6kymj4wcxmqmmcsmkyaykq"
 }
 variable "mp_listing_resource_id" {
-  default = ""
+  default = "ocid1.image.oc1..aaaaaaaaewd73p7gagjkemzjs6k63bkl4xaeyennh3qv27dvow2h6l4m5zeq"
 }
 variable "mp_listing_resource_version" {
- default = ""
+ default = "1.0"
 }
 
 variable "use_marketplace_image" {
@@ -39,9 +39,9 @@ variable "worker_count" {
   description = "Number of worker nodes to deploy."
 }
 
-variable "ad_number" {
-  default = 2
-  description = "Which availability domain to deploy to depending on quota, zero based."
+# Not used for normal terraform apply, added for ORM deployments.
+variable "ad_name" {
+  default = ""
 }
 
 variable "disk_size" {
@@ -61,13 +61,11 @@ variable "disk_count" {
 # You probably don't need to change these.
 # ---------------------------------------------------------------------------------------------------------------------
 
+# Variables not read in a mkpl/ORM deploy.
 
-# Not used for normal terraform apply, added for ORM deployments.
-variable "ad_name" {
-  default = ""
+variable "ad_number" {
+  default = -1
 }
-
-# Variable not read in a mkpl deploy.
 
 # Both GPU and non-GPU platform images
 #
