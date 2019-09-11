@@ -11,7 +11,6 @@ resource "oci_core_volume" "WorkerVolume" {
 resource "oci_core_volume_attachment" "WorkerAttachment" {
   count           = "${var.worker_count * var.disk_count}"
   attachment_type = "iscsi"
-  compartment_id  = "${var.compartment_ocid}"
   instance_id     = "${oci_core_instance.worker.*.id[count.index]}"
   volume_id       = "${oci_core_volume.WorkerVolume.*.id[count.index]}"
 }
