@@ -1,18 +1,18 @@
 locals {
   # Used locally to determine the correct platform image. Shape names always
   # start with either 'VM.'/'BM.' and all GPU shapes have 'GPU' as the next characters
-  shape_type = "${lower(substr(var.worker["shape"],3,3))}"
+  shape_type = "${lower(substr(var.shape,3,3))}"
 }
 
 resource "oci_core_instance" "worker" {
   display_name        = "kinetica-worker-${count.index}"
   compartment_id      = "${var.compartment_ocid}"
-  availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[var.worker["ad_number"]],"name")}"
-  shape               = "${var.worker["shape"]}"
+  availability_domain = "${lookup(data.oci_identity_availability_domains.availability_domains.availability_domains[var.ad_number],"name")}"
+  shape               = "${var.shape}"
   subnet_id           = "${oci_core_subnet.subnet.id}"
 
   source_details {
-    source_id   = "${local.shape_type == "gpu" ? var.images["${var.region}-gpu"] : var.images[var.region]}"
+    source_id   = "${local.shape_type == "gpu" ? var.platform-images["${var.region}-gpu"] : var.platform-images[var.region]}"
     source_type = "image"
   }
 
@@ -34,10 +34,16 @@ resource "oci_core_instance" "worker" {
 
   extended_metadata {
     license_key = "${var.license_key}"
-    config = "${jsonencode(var.worker)}"
+    config = "${jsonencode(map(
+      "shape", var.shape,
+      "disk_count", var.disk_count,
+      "disk_size", var.disk_size,
+      "worker_count", var.worker_count,
+      "license_key", var.license_key
+    ))}"
   }
 
-  count = "${var.worker["worker_count"]}"
+  count = "${var.worker_count}"
 }
 
 output "Worker server public IPs" {

@@ -25,22 +25,33 @@ variable "ssh_private_key" {}
 
 variable "license_key" {
   type = "string"
-  default = ""
 }
 
-variable "worker" {
-  type = "map"
-
-  default = {
-    shape      = "VM.GPU3.1"
-    worker_count = 1
-    # Which availability domain to deploy to depending on quota, zero based
-    ad_number = 2
-    # Number block volumes on each worker for persistence directory.
-    disk_count = 1
-    disk_size = 500
-  }
+variable "shape" {
+  default = "VM.GPU3.1"
+  description = "Instance shape to deploy for each worker."
 }
+
+variable "worker_count" {
+  default = "3"
+  description = "Number of worker nodes to deploy."
+}
+
+variable "ad_number" {
+  default = 2
+  description = "Which availability domain to deploy to depending on quota, zero based."
+}
+
+variable "disk_size" {
+  default = 500
+  description = "Size of block volume in GB for data, min 50. If set to 0 volume will not be created/mounted."
+}
+
+variable "disk_count" {
+  default = 1
+  description = "Number of disks to create for each worker. Multiple disks will create a RAID0 array."
+}
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Network variables
@@ -59,6 +70,17 @@ variable "vcn_cidr" {
 # You probably don't need to change these.
 # ---------------------------------------------------------------------------------------------------------------------
 
+# Not used for normal terraform apply, added for ORM deployments.
+variable "ad_name" {
+  default = ""
+}
+
+# Not used for normal terraform apply, added for marketplace deployments.
+
+variable "mp_listing_resource_id" {
+  default = ""
+}
+
 # Both GPU and non-GPU platform images
 #
 # https://docs.cloud.oracle.com/iaas/images/image/85e2ad5a-3979-4ed2-8d99-9a10d79fa814/
@@ -66,7 +88,7 @@ variable "vcn_cidr" {
 # https://docs.cloud.oracle.com/iaas/images/image/6180a2cb-be6c-4c78-a69f-38f2714e6b3d/
 # Oracle-Linux-7.6-2019.05.28-0
 
-variable "images" {
+variable "platform-images" {
   type = "map"
 
   default = {
