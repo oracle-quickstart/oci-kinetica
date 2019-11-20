@@ -8,8 +8,8 @@ First off you'll need to do some pre deploy setup.  That's all detailed [here](h
 You'll first want a local copy of this repo by running:
 
 ```
-git clone https://github.com/oracle/oci-quickstart-kinetica.git
-cd oci-quickstart-kinetica/simple
+git clone https://github.com/oracle-quickstart/oci-kinetica.git
+cd oci-kinetica/simple
 ls
 ```
 That should give you this:
