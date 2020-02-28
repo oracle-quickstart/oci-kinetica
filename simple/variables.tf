@@ -18,9 +18,27 @@ variable "ssh_public_key" {}
 
 variable "ssh_private_key" {}
 
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Marketplace variables
+# ---------------------------------------------------------------------------------------------------------------------
+
+variable "mp_listing_id" {
+  default = "ocid1.appcataloglisting.oc1..aaaaaaaalxpgjznatztyqaz2n4krqz5n6s7h5u6kymj4wcxmqmmcsmkyaykq"
+}
+variable "mp_listing_resource_id" {
+  default = "ocid1.image.oc1..aaaaaaaaewd73p7gagjkemzjs6k63bkl4xaeyennh3qv27dvow2h6l4m5zeq"
+}
+variable "mp_listing_resource_version" {
+ default = "1.0"
+}
+
+variable "use_marketplace_image" {
+  default = false
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Optional variables
-# The defaults here will give you a cluster.  You can also modify these.
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "license_key" {
@@ -37,9 +55,9 @@ variable "worker_count" {
   description = "Number of worker nodes to deploy."
 }
 
-variable "ad_number" {
-  default = 2
-  description = "Which availability domain to deploy to depending on quota, zero based."
+# Not used for normal terraform apply, added for ORM deployments.
+variable "ad_name" {
+  default = ""
 }
 
 variable "disk_size" {
@@ -53,32 +71,17 @@ variable "disk_count" {
 }
 
 
-# ---------------------------------------------------------------------------------------------------------------------
-# Network variables
-# ---------------------------------------------------------------------------------------------------------------------
-
-variable "vcn_display_name" {
-  default = "testVCN"
-}
-
-variable "vcn_cidr" {
-  default = "10.0.0.0/16"
-}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Constants
 # You probably don't need to change these.
 # ---------------------------------------------------------------------------------------------------------------------
 
-# Not used for normal terraform apply, added for ORM deployments.
-variable "ad_name" {
-  default = ""
-}
+# Variables not read in a mkpl/ORM deploy.
 
-# Not used for normal terraform apply, added for marketplace deployments.
-
-variable "mp_listing_resource_id" {
-  default = ""
+variable "ad_number" {
+  default = 0
+  description = "Which availability domain to deploy to depending on quota, zero based."
 }
 
 # Both GPU and non-GPU platform images
@@ -90,8 +93,8 @@ variable "mp_listing_resource_id" {
 
 variable "platform-images" {
   type = "map"
-
-  default = {
+   default = {}
+  /*default = {
     ap-seoul-1-gpu =	"ocid1.image.oc1.ap-seoul-1.aaaaaaaaekhzdpa2oibo4cgh4whp54gv3sh5y277k7ykqvzcmm7f7xuujf7q"
     ap-tokyo-1-gpu =	"ocid1.image.oc1.ap-tokyo-1.aaaaaaaaqgxuylamck3u4z43lqhcjmk63mgmwle2kuxn7urcvs3zernbmidq"
     ca-toronto-1-gpu =	"ocid1.image.oc1.ca-toronto-1.aaaaaaaaao3hzbyh3nlcif672hnkarlbmaqk47woffzcgrlgt6xg5iffoy3a"
@@ -106,5 +109,5 @@ variable "platform-images" {
     uk-london-1 =	"ocid1.image.oc1.uk-london-1.aaaaaaaa66i5ug2lc6ywq6j2y4e535vgzsgb7pwn6blv2bw5a2wb2gbo5wfa"
     us-ashburn-1 =	"ocid1.image.oc1.iad.aaaaaaaaj6pcmnh6y3hdi3ibyxhhflvp3mj2qad4nspojrnxc6pzgn2w3k5q"
     us-phoenix-1 =	"ocid1.image.oc1.phx.aaaaaaaa2wadtmv6j6zboncfobau7fracahvweue6dqipmcd5yj6s54f3wpq"
-  }
+  }*/
 }
