@@ -1,6 +1,3 @@
-# Copyright (c) 2020 Oracle and/or its affiliates.
-# Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl.
-
 locals {
   # Used locally to determine the correct platform image. Shape names always
   # start with either 'VM.'/'BM.' and all GPU shapes have 'GPU' as the next characters
@@ -13,11 +10,11 @@ locals {
 
   # Logic to choose platform or mkpl image based on
   # var.marketplace_image being empty or not
-  
+
   #platform_image = "${local.shape_type == "gpu" ? var.platform-images["${var.region}-gpu"] : var.platform-images[var.region]}"
   #image = "${var.mp_listing_resource_id == "" ? local.platform_image : var.mp_listing_resource_id}"
-  
-  #Keeping platform_image may come later from a datasource / different refactor. backwards compat. 
+
+  #Keeping platform_image may come later from a datasource / different refactor. backwards compat.
   platform_image = "${var.mp_listing_resource_id}"
   image = "${local.platform_image}"
 
