@@ -34,7 +34,7 @@ variable "mp_listing_resource_version" {
 }
 
 variable "use_marketplace_image" {
-  default = false
+  default = true
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
