@@ -40,7 +40,7 @@ variable "worker_count" {
 }
 
 variable "ad_number" {
-  default = 2
+  default = -1
   description = "Which availability domain to deploy to depending on quota, zero based."
 }
 
