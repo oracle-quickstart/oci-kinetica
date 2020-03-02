@@ -11,3 +11,6 @@
 *scratch*
 
 util/*.zip
+util/temp/*
+
+**/test/*

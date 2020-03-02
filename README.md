@@ -1,7 +1,5 @@
-# oci-quickstart-kinetica
+# oci-kinetica
 This is a Terraform module that deploys [Kinetica](https://www.kinetica.com/) on [Oracle Cloud Infrastructure (OCI)](https://cloud.oracle.com/en_US/cloud-infrastructure).  It is developed jointly by Oracle and Kinetica.
-
-This repo is under active development.  Building open source software is a community effort.  We're excited to engage with the community building this.
 
 ## Prerequisites
 First off you'll need to do some pre deploy setup.  That's all detailed [here](https://github.com/oracle/oci-quickstart-prerequisites).
@@ -10,8 +8,8 @@ First off you'll need to do some pre deploy setup.  That's all detailed [here](h
 You'll first want a local copy of this repo by running:
 
 ```
-git clone https://github.com/oracle/oci-quickstart-kinetica.git
-cd oci-quickstart-kinetica/simple
+git clone https://github.com/oracle-quickstart/oci-kinetica.git
+cd oci-kinetica/simple
 ls
 ```
 That should give you this:
