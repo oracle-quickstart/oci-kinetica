@@ -43,9 +43,9 @@ resource "oci_core_instance" "worker" {
         "\n",
         [
           "#!/usr/bin/env bash",
-          file("../scripts/metadata.sh"),
-          file("../scripts/disks.sh"),
-          file("../scripts/worker.sh"),
+          file("./scripts/metadata.sh"),
+          file("./scripts/disks.sh"),
+          file("./scripts/worker.sh"),
         ],
       ),
     )
