@@ -23,8 +23,6 @@ cp -rv ../scripts ./tmp_package
 
 echo "Removing provider.tf...."
 rm ./tmp_package/provider.tf
-echo "Removing variables.tf...."
-rm ./tmp_package/variables.tf
 
 echo "Adding $schema..."
 cp $schema ./tmp_package
