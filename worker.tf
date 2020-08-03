@@ -8,15 +8,7 @@ locals {
   # Use of max() prevents out of index lookup call.
   ad = var.ad_number >= 0 ? data.oci_identity_availability_domains.availability_domains.availability_domains[max(0, var.ad_number)]["name"] : var.ad_name
 
-  # Logic to choose platform or mkpl image based on
-  # var.marketplace_image being empty or not
-
-  #platform_image = "${local.shape_type == "gpu" ? var.platform-images["${var.region}-gpu"] : var.platform-images[var.region]}"
-  #image = "${var.mp_listing_resource_id == "" ? local.platform_image : var.mp_listing_resource_id}"
-
-  #Keeping platform_image may come later from a datasource / different refactor. backwards compat.
-  platform_image = var.mp_listing_resource_id
-  image          = local.platform_image
+  image          = var.mp_listing_resource_id
 }
 
 resource "oci_core_instance" "worker" {

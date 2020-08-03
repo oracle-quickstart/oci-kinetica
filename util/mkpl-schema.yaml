@@ -13,9 +13,8 @@ groupings:
     - mp_listing_resource_id
     - mp_listing_resource_version
     - use_marketplace_image
-    # QS specific platform vars
+    # QS specific vars
     - ad_number
-    - platform-images
 
   - title: "Kinetica Configuration"
     visible: true
