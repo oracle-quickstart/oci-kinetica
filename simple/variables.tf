@@ -5,19 +5,30 @@
 # ---------------------------------------------------------------------------------------------------------------------
 
 # Required by the OCI Provider
-variable "tenancy_ocid" {}
+variable "tenancy_ocid" {
+}
 
-variable "compartment_ocid" {}
-variable "user_ocid" {}
-variable "fingerprint" {}
-variable "private_key_path" {}
-variable "region" {}
+variable "compartment_ocid" {
+}
+
+variable "user_ocid" {
+}
+
+variable "fingerprint" {
+}
+
+variable "private_key_path" {
+}
+
+variable "region" {
+}
 
 # Key used to SSH to OCI VMs
-variable "ssh_public_key" {}
+variable "ssh_public_key" {
+}
 
-variable "ssh_private_key" {}
-
+variable "ssh_private_key" {
+}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Marketplace variables
@@ -26,11 +37,13 @@ variable "ssh_private_key" {}
 variable "mp_listing_id" {
   default = "ocid1.appcataloglisting.oc1..aaaaaaaalxpgjznatztyqaz2n4krqz5n6s7h5u6kymj4wcxmqmmcsmkyaykq"
 }
+
 variable "mp_listing_resource_id" {
   default = "ocid1.image.oc1..aaaaaaaaewd73p7gagjkemzjs6k63bkl4xaeyennh3qv27dvow2h6l4m5zeq"
 }
+
 variable "mp_listing_resource_version" {
- default = "1.0"
+  default = "1.0"
 }
 
 variable "use_marketplace_image" {
@@ -42,16 +55,16 @@ variable "use_marketplace_image" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 variable "license_key" {
-  type = "string"
+  type = string
 }
 
 variable "shape" {
-  default = "VM.GPU3.1"
+  default     = "VM.GPU3.1"
   description = "Instance shape to deploy for each worker."
 }
 
 variable "worker_count" {
-  default = "3"
+  default     = "3"
   description = "Number of worker nodes to deploy."
 }
 
@@ -61,16 +74,14 @@ variable "ad_name" {
 }
 
 variable "disk_size" {
-  default = 500
+  default     = 500
   description = "Size of block volume in GB for data, min 50. If set to 0 volume will not be created/mounted."
 }
 
 variable "disk_count" {
-  default = 1
+  default     = 1
   description = "Number of disks to create for each worker. Multiple disks will create a RAID0 array."
 }
-
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Constants
@@ -80,7 +91,7 @@ variable "disk_count" {
 # Variables not read in a mkpl/ORM deploy.
 
 variable "ad_number" {
-  default = 0
+  default     = 0
   description = "Which availability domain to deploy to depending on quota, zero based."
 }
 
@@ -92,8 +103,8 @@ variable "ad_number" {
 # Oracle-Linux-7.6-2019.05.28-0
 
 variable "platform-images" {
-  type = "map"
-   default = {}
+  type    = map(string)
+  default = {}
   /*default = {
     ap-seoul-1-gpu =	"ocid1.image.oc1.ap-seoul-1.aaaaaaaaekhzdpa2oibo4cgh4whp54gv3sh5y277k7ykqvzcmm7f7xuujf7q"
     ap-tokyo-1-gpu =	"ocid1.image.oc1.ap-tokyo-1.aaaaaaaaqgxuylamck3u4z43lqhcjmk63mgmwle2kuxn7urcvs3zernbmidq"
@@ -111,3 +122,4 @@ variable "platform-images" {
     us-phoenix-1 =	"ocid1.image.oc1.phx.aaaaaaaa2wadtmv6j6zboncfobau7fracahvweue6dqipmcd5yj6s54f3wpq"
   }*/
 }
+
