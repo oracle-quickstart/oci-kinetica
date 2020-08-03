@@ -24,7 +24,6 @@ resource "oci_core_instance" "worker" {
   compartment_id      = var.compartment_ocid
   availability_domain = local.ad
   shape               = var.shape
-  subnet_id           = oci_core_subnet.subnet.id
 
   source_details {
     source_id   = local.image

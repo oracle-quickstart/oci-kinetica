@@ -11,15 +11,6 @@ variable "tenancy_ocid" {
 variable "compartment_ocid" {
 }
 
-variable "user_ocid" {
-}
-
-variable "fingerprint" {
-}
-
-variable "private_key_path" {
-}
-
 variable "region" {
 }
 
@@ -122,4 +113,3 @@ variable "platform-images" {
     us-phoenix-1 =	"ocid1.image.oc1.phx.aaaaaaaa2wadtmv6j6zboncfobau7fracahvweue6dqipmcd5yj6s54f3wpq"
   }*/
 }
-
