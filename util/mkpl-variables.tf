@@ -9,7 +9,7 @@ variable "mp_listing_resource_id" {
   default = "ocid1.image.oc1..aaaaaaaaewd73p7gagjkemzjs6k63bkl4xaeyennh3qv27dvow2h6l4m5zeq"
 }
 variable "mp_listing_resource_version" {
- default = "1.0"
+  default = "1.0"
 }
 
 variable "use_marketplace_image" {
@@ -30,17 +30,17 @@ variable "license_key" {
 }
 
 variable "shape" {
-  default = "VM.GPU3.1"
+  default     = "VM.GPU3.1"
   description = "Instance shape to deploy for each worker."
 }
 
 variable "worker_count" {
-  default = "3"
+  default     = "3"
   description = "Number of worker nodes to deploy."
 }
 
 variable "ad_number" {
-  default = -1
+  default     = -1
   description = "Which availability domain to deploy to depending on quota, zero based."
 }
 
@@ -50,12 +50,12 @@ variable "ad_name" {
 }
 
 variable "disk_size" {
-  default = 500
+  default     = 500
   description = "Size of block volume in GB for data, min 50. If set to 0 volume will not be created/mounted."
 }
 
 variable "disk_count" {
-  default = 1
+  default     = 1
   description = "Number of disks to create for each worker. Multiple disks will create a RAID0 array."
 }
 
