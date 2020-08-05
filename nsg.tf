@@ -35,7 +35,7 @@ resource "oci_core_network_security_group_security_rule" "simple_rule_ssh_ingres
 }
 
 # Allow ingress for GAdmin
-resource "oci_core_network_security_group_security_rule" "simple_rule_https_ingress" {
+resource "oci_core_network_security_group_security_rule" "gadmin_ingress" {
   network_security_group_id = oci_core_network_security_group.simple_nsg.id
   protocol                  = "6"
   direction                 = "INGRESS"
@@ -51,7 +51,7 @@ resource "oci_core_network_security_group_security_rule" "simple_rule_https_ingr
 }
 
 # Allow ingress for Reveal
-resource "oci_core_network_security_group_security_rule" "simple_rule_http_ingress" {
+resource "oci_core_network_security_group_security_rule" "reveal_ingress" {
   network_security_group_id = oci_core_network_security_group.simple_nsg.id
   protocol                  = "6"
   direction                 = "INGRESS"
