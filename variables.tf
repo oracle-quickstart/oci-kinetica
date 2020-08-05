@@ -152,21 +152,6 @@ variable "nsg_source_cidr" {
   default     = "0.0.0.0/0"
 }
 
-variable "nsg_ssh_port" {
-  description = "SSH Port"
-  default     = 22
-}
-
-variable "nsg_https_port" {
-  description = "HTTPS Port"
-  default     = 443
-}
-
-variable "nsg_http_port" {
-  description = "HTTP Port"
-  default     = 80
-}
-
 ############################
 # Additional Configuration #
 ############################

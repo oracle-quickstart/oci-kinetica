@@ -28,8 +28,8 @@ resource "oci_core_network_security_group_security_rule" "simple_rule_ssh_ingres
 
   tcp_options {
     destination_port_range {
-      min = var.nsg_ssh_port
-      max = var.nsg_ssh_port
+      min = 22
+      max = 22
     }
   }
 }
