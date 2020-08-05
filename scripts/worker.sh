@@ -71,6 +71,7 @@ sed -i -E "s/enable_caravel =.*/enable_caravel = ${ENABLE_CARAVEL}/g" $GPUDB_CON
 sed -i -E "s/enable_odbc_connector =.*/enable_odbc_connector = ${ENABLE_ODBC}/g" $GPUDB_CONF_FILE
 sed -i -E "s:persist_directory = .*:persist_directory = /data/gpudb/persist:g" $GPUDB_CONF_FILE
 sed -i -E "s:license_key =.*:license_key = ${LICENSE_KEY}:g" $GPUDB_CONF_FILE
+sed -i -E "s/enable_text_search =.*/enable_text_search = true/g" $GPUDB_CONF_FILE
 
 # testing
 #sed -i -E "s:use_https = .*:use_https = true:g" $GPUDB_CONF_FILE
