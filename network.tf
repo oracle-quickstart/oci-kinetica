@@ -1,91 +1,50 @@
-locals {
-  tcp_protocol  = "6"
-  all_protocols = "all"
-  anywhere      = "0.0.0.0/0"
+resource "oci_core_vcn" "simple" {
+  count          = local.use_existing_network ? 0 : 1
+  cidr_block     = var.vcn_cidr_block
+  dns_label      = substr(var.vcn_dns_label, 0, 15)
+  compartment_id = var.compartment_ocid
+  display_name   = var.vcn_display_name
+
 }
 
-data "oci_identity_availability_domains" "availability_domains" {
+#IGW
+resource "oci_core_internet_gateway" "simple_internet_gateway" {
+  count          = local.use_existing_network ? 0 : 1
   compartment_id = var.compartment_ocid
+  vcn_id         = oci_core_vcn.simple[count.index].id
+  enabled        = "true"
+  display_name   = "${var.vcn_display_name}-igw"
+
 }
 
-resource "oci_core_virtual_network" "virtual_network" {
-  display_name   = "virtual_network"
-  compartment_id = var.compartment_ocid
-  cidr_block     = "10.0.0.0/16"
-  dns_label      = "kinetica"
+#simple subnet
+resource "oci_core_subnet" "simple_subnet" {
+  count                      = local.use_existing_network ? 0 : 1
+  cidr_block                 = var.subnet_cidr_block
+  compartment_id             = var.compartment_ocid
+  vcn_id                     = oci_core_vcn.simple[count.index].id
+  display_name               = var.subnet_display_name
+  dns_label                  = substr(var.subnet_dns_label, 0, 15)
+  prohibit_public_ip_on_vnic = ! local.is_public_subnet
+
 }
 
-resource "oci_core_internet_gateway" "internet_gateway" {
-  display_name   = "internet_gateway"
+resource "oci_core_route_table" "simple_route_table" {
+  count          = local.use_existing_network ? 0 : 1
   compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.virtual_network.id
-}
-
-resource "oci_core_route_table" "route_table" {
-  display_name   = "route_table"
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.virtual_network.id
+  vcn_id         = oci_core_vcn.simple[count.index].id
+  display_name   = "${var.subnet_display_name}-rt"
 
   route_rules {
+    network_entity_id = oci_core_internet_gateway.simple_internet_gateway[count.index].id
     destination       = "0.0.0.0/0"
-    network_entity_id = oci_core_internet_gateway.internet_gateway.id
+    destination_type  = "CIDR_BLOCK"
   }
+
 }
 
-resource "oci_core_security_list" "security_list" {
-  display_name   = "security_list"
-  compartment_id = var.compartment_ocid
-  vcn_id         = oci_core_virtual_network.virtual_network.id
-
-  egress_security_rules {
-    protocol    = local.all_protocols
-    destination = local.anywhere
-  }
-
-  ingress_security_rules {
-    protocol = local.tcp_protocol
-    source   = local.anywhere
-
-    tcp_options {
-      max = "22"
-      min = "22"
-    }
-  }
-
-  ingress_security_rules {
-    protocol = local.all_protocols
-    source   = "10.0.0.0/16"
-  }
-
-  ingress_security_rules {
-    protocol = local.tcp_protocol
-    source   = local.anywhere
-
-    tcp_options {
-      max = "8080"
-      min = "8080"
-    }
-  }
-
-  ingress_security_rules {
-    protocol = local.tcp_protocol
-    source   = local.anywhere
-
-    tcp_options {
-      max = "8088"
-      min = "8088"
-    }
-  }
+resource "oci_core_route_table_attachment" "route_table_attachment" {
+  count          = local.use_existing_network ? 0 : 1
+  subnet_id      = oci_core_subnet.simple_subnet[count.index].id
+  route_table_id = oci_core_route_table.simple_route_table[count.index].id
 }
-
-resource "oci_core_subnet" "subnet" {
-  display_name      = "subnet"
-  compartment_id    = var.compartment_ocid
-  cidr_block        = "10.0.0.0/16"
-  vcn_id            = oci_core_virtual_network.virtual_network.id
-  route_table_id    = oci_core_route_table.route_table.id
-  security_list_ids = [oci_core_security_list.security_list.id]
-  dhcp_options_id   = oci_core_virtual_network.virtual_network.default_dhcp_options_id
-  dns_label         = "kinetica"
-}
-

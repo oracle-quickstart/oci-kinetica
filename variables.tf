@@ -23,6 +23,12 @@ variable "ssh_public_key" {
 # Marketplace variables
 # ---------------------------------------------------------------------------------------------------------------------
 
+variable "mp_subscription_enabled" {
+  description = "Subscribe to Marketplace listing?"
+  type        = bool
+  default     = true
+}
+
 variable "mp_listing_id" {
   default = "ocid1.appcataloglisting.oc1..aaaaaaaalxpgjznatztyqaz2n4krqz5n6s7h5u6kymj4wcxmqmmcsmkyaykq"
 }
@@ -59,8 +65,8 @@ variable "worker_count" {
 }
 
 variable "ad_number" {
-  default     = 0
-  description = "Which availability domain to deploy to depending on quota, zero based."
+  default     = 1
+  description = "Which availability domain to deploy to depending on quota."
 }
 
 # Not used for normal terraform apply, added for ORM deployments.
@@ -76,4 +82,130 @@ variable "disk_size" {
 variable "disk_count" {
   default     = 1
   description = "Number of disks to create for each worker. Multiple disks will create a RAID0 array."
+}
+
+
+############################
+#  Network Configuration   #
+############################
+
+variable "network_strategy" {
+  #default = "Use Existing VCN and Subnet"
+  default = "Create New VCN and Subnet"
+}
+
+variable "vcn_id" {
+  default = ""
+}
+
+variable "vcn_display_name" {
+  description = "VCN Name"
+  default     = "simple-vcn"
+}
+
+variable "vcn_cidr_block" {
+  description = "VCN CIDR"
+  default     = "10.0.0.0/16"
+}
+
+variable "vcn_dns_label" {
+  description = "VCN DNS Label"
+  default     = "simplevcn"
+}
+
+variable "subnet_type" {
+  description = "Choose between private and public subnets"
+  default     = "Public Subnet"
+  #or
+  #default     = "Private Subnet"
+}
+
+variable "subnet_id" {
+  default = ""
+}
+
+variable "subnet_display_name" {
+  description = "Subnet Name"
+  default     = "simple-subnet"
+}
+
+variable "subnet_cidr_block" {
+  description = "Subnet CIDR"
+  default     = "10.0.0.0/24"
+}
+
+variable "subnet_dns_label" {
+  description = "Subnet DNS Label"
+  default     = "simplesubnet"
+}
+
+############################
+# Security Configuration #
+############################
+variable "nsg_display_name" {
+  description = "Network Security Group Name"
+  default     = "simple-network-security-group"
+}
+
+variable "nsg_source_cidr" {
+  description = "Allowed Ingress Traffic (CIDR Block)"
+  default     = "0.0.0.0/0"
+}
+
+variable "nsg_ssh_port" {
+  description = "SSH Port"
+  default     = 22
+}
+
+variable "nsg_https_port" {
+  description = "HTTPS Port"
+  default     = 443
+}
+
+variable "nsg_http_port" {
+  description = "HTTP Port"
+  default     = 80
+}
+
+############################
+# Additional Configuration #
+############################
+
+# only used for E3 Flex shape
+variable "vm_flex_shape_ocpus" {
+  description = "Flex Shape OCPUs"
+  default = 1
+}
+
+variable "custom_image_id" {
+ default = ""
+}
+
+
+######################
+#    Enum Values     #
+######################
+variable "network_strategy_enum" {
+  type = map
+  default = {
+    CREATE_NEW_VCN_SUBNET   = "Create New VCN and Subnet"
+    USE_EXISTING_VCN_SUBNET = "Use Existing VCN and Subnet"
+  }
+}
+
+variable "subnet_type_enum" {
+  type = map
+  default = {
+    PRIVATE_SUBNET = "Private Subnet"
+    PUBLIC_SUBNET  = "Public Subnet"
+  }
+}
+
+variable "nsg_config_enum" {
+  type = map
+  default = {
+    BLOCK_ALL_PORTS = "Block all ports"
+    OPEN_ALL_PORTS  = "Open all ports"
+    CUSTOMIZE       = "Customize ports - Post deployment"
+  }
 }

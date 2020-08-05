@@ -1,20 +1,8 @@
-locals {
-  # Used locally to determine the correct platform image. Shape names always
-  # start with either 'VM.'/'BM.' and all GPU shapes have 'GPU' as the next characters
-  shape_type = lower(substr(var.shape, 3, 3))
-
-  # If ad_number is non-negative use it for AD lookup, else use ad_name.
-  # Allows for use of ad_number in TF deploys, and ad_name in ORM.
-  # Use of max() prevents out of index lookup call.
-  ad = var.ad_number >= 0 ? data.oci_identity_availability_domains.availability_domains.availability_domains[max(0, var.ad_number)]["name"] : var.ad_name
-
-  image          = var.mp_listing_resource_id
-}
 
 resource "oci_core_instance" "worker" {
   display_name        = "kinetica-worker-${count.index}"
   compartment_id      = var.compartment_ocid
-  availability_domain = local.ad
+  availability_domain = local.availability_domain
   shape               = var.shape
 
   source_details {
@@ -23,8 +11,10 @@ resource "oci_core_instance" "worker" {
   }
 
   create_vnic_details {
-    subnet_id      = oci_core_subnet.subnet.id
+    subnet_id      = local.use_existing_network ? var.subnet_id : oci_core_subnet.simple_subnet[0].id
     hostname_label = "kinetica-worker-${count.index}"
+    nsg_ids                = [oci_core_network_security_group.simple_nsg.id]
+    assign_public_ip       = local.is_public_subnet
   }
 
   metadata = {
@@ -53,6 +43,12 @@ resource "oci_core_instance" "worker" {
         "license_key"  = var.license_key
       },
     )
+  }
+
+  lifecycle {
+    ignore_changes = [
+      source_details[0].source_id
+    ]
   }
 
   count = var.worker_count
