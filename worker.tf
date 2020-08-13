@@ -11,10 +11,10 @@ resource "oci_core_instance" "worker" {
   }
 
   create_vnic_details {
-    subnet_id      = local.use_existing_network ? var.subnet_id : oci_core_subnet.simple_subnet[0].id
-    hostname_label = "kinetica-worker-${count.index}"
-    nsg_ids                = [oci_core_network_security_group.simple_nsg.id]
-    assign_public_ip       = local.is_public_subnet
+    subnet_id        = local.use_existing_network ? var.subnet_id : oci_core_subnet.simple_subnet[0].id
+    hostname_label   = "kinetica-worker-${count.index}"
+    nsg_ids          = [oci_core_network_security_group.simple_nsg.id]
+    assign_public_ip = local.is_public_subnet
   }
 
   metadata = {
@@ -68,4 +68,8 @@ output "gadmin_url" {
 
 output "reveal_url" {
   value = "http://${oci_core_instance.worker[0].public_ip}:8088"
+}
+
+output "aaw_url" {
+  value = "http://${oci_core_instance.worker[0].public_ip}:8070"
 }

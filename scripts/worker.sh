@@ -163,3 +163,71 @@ systemctl start gpudb_host_manager
 sleep 10s
 
 service gpudb start
+
+
+# AAW and k8
+#################################
+
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+[kubernetes]
+name=Kubernetes
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+EOF
+
+# pulls in deps, eg docker
+yum install -y --enablerepo=kubernetes kubelet kubeadm kubectl docker-engine
+
+# selinux permissive now and in config
+/usr/sbin/setenforce 0
+sed -i -E "s/SELINUX=.*/SELINUX=permissive/g" /etc/selinux/config
+swapoff -a
+modprobe br_netfilter
+echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+systemctl enable docker
+systemctl start docker
+
+systemctl enable kubelet
+systemctl start kubelet
+
+kubeadm init
+
+# root
+mkdir -p $HOME/.kube
+cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+chown $(id -u):$(id -g) $HOME/.kube/config
+# opc
+mkdir -p ~opc/.kube
+cp -i /etc/kubernetes/admin.conf ~opc/.kube/config
+chown -R opc:opc $HOME/.kube
+
+kubectl get nodes
+export kubever=$(kubectl version | base64 | tr -d '\n')
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubever"
+# sleep 1m; kubectl get nodes
+
+#cpu/gpu logic
+yum install -y kinetica-ml.x86_64
+
+mkdir -p /opt/gpudb/.kube
+cp /etc/kubernetes/admin.conf /opt/gpudb/.kube/config
+chown -R gpudb:gpudb /opt/gpudb/.kube
+
+# sed over /opt/gpudb/kml/etc/kml.ini and /opt/gpudb/kml/etc/application.properties
+kml_ini="/opt/gpudb/kml/etc/kml.ini"
+cp $kml_ini $kml_ini.bak
+sed -i -E "s/api_connection=.*/api_connection=http:\/\/${public_ip}:9187/g" $kml_ini
+sed -i -E "s/db_connection=.*/db_connection=http:\/\/${private_ip}:9191/g" $kml_ini
+sed -i -E "s:kube_config=.*:kube_config=/opt/gpudb/.kube/config:g" $kml_ini
+
+kml_props="/opt/gpudb/kml/etc/application.properties"
+cp $kml_props $kml_props.bak
+sed -i -E "s/kinetica.api-url=.*/kinetica.api-url=http:\/\/${private_ip}:9191/g" $kml_props
+sed -i -E "s/kinetica.hostmanager-api-url=.*/kinetica.hostmanager-api-url=http:\/\/${private_ip}:9300/g" $kml_props
+sed -i -E "s/kinetica.kml-api-url=.*/kinetica.kml-api-url=http:\/\/${public_ip}:9187\/kml/g" $kml_props
+
+service kml restart

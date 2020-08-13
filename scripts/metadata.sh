@@ -5,7 +5,7 @@ echo "Gathering metadata..."
 export CONFIG_LOCATION='.metadata.config'
 
 public_ip=$(oci-public-ip -j | jq -r '.publicIp')
-private_ip=$(hostname -I)
+private_ip=$(hostname -i)
 
 json=$(curl -sSL http://169.254.169.254/opc/v1/instance/)
 shape=$(echo $json | jq -r .shape)

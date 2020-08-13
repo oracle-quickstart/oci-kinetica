@@ -25,6 +25,8 @@ resource "oci_core_network_security_group_security_rule" "simple_rule_ssh_ingres
   direction                 = "INGRESS"
   source                    = var.nsg_source_cidr
   stateless                 = false
+  description               = "SSH"
+
 
   tcp_options {
     destination_port_range {
@@ -41,6 +43,7 @@ resource "oci_core_network_security_group_security_rule" "gadmin_ingress" {
   direction                 = "INGRESS"
   source                    = var.nsg_source_cidr
   stateless                 = false
+  description               = "GAdmin access"
 
   tcp_options {
     destination_port_range {
@@ -57,11 +60,46 @@ resource "oci_core_network_security_group_security_rule" "reveal_ingress" {
   direction                 = "INGRESS"
   source                    = var.nsg_source_cidr
   stateless                 = false
+  description               = "Reveal access"
 
   tcp_options {
     destination_port_range {
       min = 8088
       max = 8088
+    }
+  }
+}
+
+# Allow ingress for AAW
+resource "oci_core_network_security_group_security_rule" "aaw_ingress" {
+  network_security_group_id = oci_core_network_security_group.simple_nsg.id
+  protocol                  = "6"
+  direction                 = "INGRESS"
+  source                    = var.nsg_source_cidr
+  stateless                 = false
+  description               = "AAW access"
+
+  tcp_options {
+    destination_port_range {
+      min = 8070
+      max = 8070
+    }
+  }
+}
+
+# Allow ingress for AAW API
+resource "oci_core_network_security_group_security_rule" "aaw_api_ingress" {
+  network_security_group_id = oci_core_network_security_group.simple_nsg.id
+  protocol                  = "6"
+  direction                 = "INGRESS"
+  source                    = var.nsg_source_cidr
+  stateless                 = false
+  description               = "AAW API access"
+
+  tcp_options {
+    destination_port_range {
+      min = 8070
+      max = 8070
     }
   }
 }

@@ -159,11 +159,11 @@ variable "nsg_source_cidr" {
 # only used for E3 Flex shape
 variable "vm_flex_shape_ocpus" {
   description = "Flex Shape OCPUs"
-  default = 1
+  default     = 1
 }
 
 variable "custom_image_id" {
- default = ""
+  default = ""
 }
 
 

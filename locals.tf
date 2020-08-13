@@ -17,12 +17,12 @@ locals {
   listing_resource_id      = var.mp_listing_resource_id
   listing_resource_version = var.mp_listing_resource_version
 
-  is_flex_shape = var.shape == "VM.Standard.E3.Flex" ? [var.vm_flex_shape_ocpus]:[]
+  is_flex_shape = var.shape == "VM.Standard.E3.Flex" ? [var.vm_flex_shape_ocpus] : []
 
   # Used locally to determine the correct platform image. Shape names always
   # start with either 'VM.'/'BM.' and all GPU shapes have 'GPU' as the next characters
   shape_type = lower(substr(var.shape, 3, 3))
 
   # Logic to choose a custom image or a marketplace image.
-  image          = var.mp_subscription_enabled ? var.mp_listing_resource_id : var.custom_image_id
+  image = var.mp_subscription_enabled ? var.mp_listing_resource_id : var.custom_image_id
 }
