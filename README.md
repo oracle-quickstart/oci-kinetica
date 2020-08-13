@@ -60,13 +60,14 @@ You'll see 4 outputs that should look like this with different IPs:
 ```
 Outputs:
 
-GAdmin URL = http://132.145.215.17:8080
-Reveal URL = http://132.145.215.17:8088
-Worker server private IPs = 10.0.0.2
-Worker server public IPs = 132.145.215.17
+aaw_url = http://132.145.140.206:8070
+gadmin_url = http://132.145.140.206:8080
+reveal_url = http://132.145.140.206:8088
+worker_private_ips = 10.0.0.7,10.0.0.6,10.0.0.5
+worker_public_ips = 132.145.140.206,150.136.220.242,129.213.16.31
 ```
 
-Point your browser at the `GAdmin URL` in the outputs. If GAdmin doesn't respond
+Point your browser at the `gadmin_url` in the outputs. If GAdmin doesn't respond
 immediately, the configuration is still finishing.
 
 At first login with default credentials `admin/admin` you'll be prompted to set a password.
@@ -77,6 +78,19 @@ At first login with default credentials `admin/admin` you'll be prompted to set 
 You should then see the GAdmin console.
 
 ![](./images/08-gadmin.png)
+
+You can also log into Reveal with the `reveal_url` like below. The default credentials
+are again `admin/admin` and need to be changed separately from GAdmin post-login.
+
+![](./images/09-reveal.png)
+
+You can also log into Active Analytics Workbench with the `aaw_url` like below.
+Here the credentials are shared with GAdmin, ie you can log in with `admin` and
+the password you chose when resetting.
+
+![](./images/10-aaw.png)
+
+AAW is running against a dev sized local K8 cluster running on `kinetica-worker-0`.
 
 ## Destroy the Deployment
 When you no longer need the deployment, you can run this command to destroy it:
