@@ -7,7 +7,6 @@
 
 out_file="mkpl-byol.zip"
 schema="mkpl-schema.yaml"
-variables="mkpl-variables.tf"
 
 echo "TEST cleanup"
 rm -rf ./tmp_package
@@ -26,8 +25,6 @@ rm ./tmp_package/provider.tf
 
 echo "Adding $schema..."
 cp $schema ./tmp_package
-echo "Adding $variables..."
-cp $variables ./tmp_package
 
 # Add latest git log entry
 git log -n 1 > tmp_package/git.log
