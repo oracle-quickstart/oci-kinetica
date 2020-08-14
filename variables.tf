@@ -41,10 +41,6 @@ variable "mp_listing_resource_version" {
   default = "1.0"
 }
 
-variable "use_marketplace_image" {
-  default = true
-}
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Optional variables
