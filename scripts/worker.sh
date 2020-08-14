@@ -153,17 +153,14 @@ sed -i -E "s~rank0.host = 127.0.0.1~${RANK_HOSTS}~g" $GPUDB_CONF_FILE
 #debug
 cp $GPUDB_CONF_FILE $GPUDB_CONF_FILE.mine
 
+# Start services
 echo "Sleeping 30s..."
 sleep 30s
-
-# Start service
-echo "Starting services"
-systemctl enable gpudb_host_manager
-systemctl start gpudb_host_manager
-sleep 10s
-
+echo "Enabling/Starting gpudb..."
+service gpudb enable
 service gpudb start
-
+sleep 30s
+/etc/init.d/gpudb restart all
 
 # AAW and k8
 #################################
