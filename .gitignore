@@ -6,6 +6,7 @@
 *.tfstate.*
 *.zip*
 *.tfvars
+.terraform.lock.hcl
 
 # General
 .DS_Store
@@ -35,4 +36,3 @@ Temporary Items
 .apdisk
 
 *scratch*
-
