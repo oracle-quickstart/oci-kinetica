@@ -12,7 +12,7 @@ systemctl disable firewalld
 #######################################################
 
 echo "Running yum install"
-wget -O /etc/yum.repos.d/kinetica-7.0.repo http://repo.kinetica.com/yum/7.0/CentOS/7/x86_64/kinetica-7.0.repo
+wget -O /etc/yum.repos.d/kinetica-7.1.repo http://repo.kinetica.com/yum/7.1/CentOS/7/x86_64/kinetica-7.1.repo
 
 if [[ $shape == *"GPU"* ]]; then
   echo "Running on GPU shape, installing cuda build..."
