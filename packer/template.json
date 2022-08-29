@@ -3,9 +3,8 @@
       "availibilty_domain": "{{env `PACKER_availibilty_domain`}}",
       "compartment_ocid": "{{env `PACKER_compartment_ocid`}}",
       "subnet_ocid": "{{env `PACKER_subnet_ocid`}}",
-      "availibilty_domain": "IYfK:US-ASHBURN-AD-1",
-      "base_image_ocid": "ocid1.image.oc1.iad.aaaaaaaa6tp7lhyrcokdtf7vrbmxyp2pctgg4uxvt4jz4vc47qoc2ec4anha",
-      "shape": "VM.Standard2.1",
+      "base_image_ocid": "{{env `PACKER_base_image`}}",
+      "shape": "{{env `PACKER_shape`}}",
       "ssh_username": "opc",
       "type": "oracle-oci",
       "my_secret": "{{env `PACKER_my_secret`}}"
@@ -22,16 +21,6 @@
     }
   ],
   "provisioners": [
-    {
-      "type": "shell",
-      "expect_disconnect": "true",
-      "inline": [
-        "cd ~",
-        "echo Hello World!",
-        "echo {{user `my_secret`}} > /dev/null",
-        "touch foobar.txt" 
-      ]
-    },
     {
       "type": "shell",
       "script": "installer.sh"
