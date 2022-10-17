@@ -12,7 +12,7 @@ systemctl disable firewalld
 #######################################################
 
 echo "Running yum install"
-wget -O /etc/yum.repos.d/kinetica-7.0.repo http://repo.kinetica.com/yum/7.0/CentOS/7/x86_64/kinetica-7.0.repo
+wget -O /etc/yum.repos.d/kinetica-7.1.repo http://repo.kinetica.com/yum/7.1/CentOS/8/x86_64/kinetica-7.1.repo
 
 if [[ $shape == *"GPU"* ]]; then
   echo "Running on GPU shape, installing cuda build..."
@@ -22,7 +22,7 @@ if [[ $shape == *"GPU"* ]]; then
   echo "Found the following number of GPUS: $NUM_GPU"
 else
   echo "Running on non-GPU shape, installing intel build..."
-  yum install -y gpudb-intel-license.x86_64
+  yum install -y numactl gpudb-intel-license.x86_64
   NUM_NUMA=$(lscpu | awk -F":" '/^NUMA node\(s\)/ { print $2 }' | tr -d ' ')
   echo "Found the following number of NUMA nodes: $NUM_NUMA"
 fi
