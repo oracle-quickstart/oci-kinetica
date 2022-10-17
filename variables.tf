@@ -56,12 +56,12 @@ variable "shape" {
 }
 
 variable "worker_count" {
-  default     = "3"
+  default     = "2"
   description = "Number of worker nodes to deploy."
 }
 
 variable "ad_number" {
-  default     = 1
+  default     = 2
   description = "Which availability domain to deploy to depending on quota."
 }
 
