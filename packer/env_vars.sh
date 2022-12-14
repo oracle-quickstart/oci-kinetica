@@ -1,6 +1,6 @@
-export PACKER_availibilty_domain=""
-export PACKER_compartment_ocid=""
-export PACKER_subnet_ocid=""
+#export PACKER_availibilty_domain=""
+#export PACKER_compartment_ocid=""
+#export PACKER_subnet_ocid=""
 
 # export PACKER_base_image="ocid1.image.oc1.iad.aaaaaaaanpammf3j2xcbcoykbwlk3m35ko6svsdj2sut2fjtmnmujcnh3pvq"
 # export PACKER_shape="VM.Standard.E3.Flex"
