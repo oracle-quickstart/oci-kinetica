@@ -30,15 +30,16 @@ variable "mp_subscription_enabled" {
 }
 
 variable "mp_listing_id" {
-  default = "ocid1.appcataloglisting.oc1..aaaaaaaalxpgjznatztyqaz2n4krqz5n6s7h5u6kymj4wcxmqmmcsmkyaykq"
+  default = "ocid1.appcataloglisting.oc1..aaaaaaaasim6yxfhh4paadynknfikod6whtuxv6xwaf2x6igdx6zqfc4m2la"
 }
 
+#teeset w/ cpu
 variable "mp_listing_resource_id" {
-  default = "ocid1.image.oc1..aaaaaaaaewd73p7gagjkemzjs6k63bkl4xaeyennh3qv27dvow2h6l4m5zeq"
+  default = "ocid1.image.oc1..aaaaaaaato5t74fsiszle5lhttk5oh4owhpamp3vw2y5luawfxhav42hvb6a"
 }
 
 variable "mp_listing_resource_version" {
-  default = "1.0"
+  default = "7.1_CPU"
 }
 
 
@@ -56,7 +57,7 @@ variable "shape" {
 }
 
 variable "worker_count" {
-  default     = "2"
+  default     = 2
   description = "Number of worker nodes to deploy."
 }
 

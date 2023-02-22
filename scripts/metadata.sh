@@ -4,7 +4,7 @@ echo "Gathering metadata..."
 # Config is assumed to be in this location in instance metadata
 export CONFIG_LOCATION='.metadata.config'
 
-public_ip=$(oci-public-ip -j | jq -r '.publicIp')
+public_ip=$(oci-public-ip -j | grep "Address" | jq -r '.[0]."IP Address"')
 private_ip=$(hostname -i)
 
 json=$(curl -sSL http://169.254.169.254/opc/v1/instance/)
