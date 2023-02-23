@@ -6,7 +6,7 @@
 # Output: $out_file
 
 out_file="mkpl-byol.zip"
-schema="mkpl-schema.yaml"
+schema="schema.yaml"
 
 echo "TEST cleanup"
 rm -rf ./tmp_package
@@ -24,7 +24,7 @@ echo "Removing provider.tf...."
 rm ./tmp_package/provider.tf
 
 echo "Adding $schema..."
-cp $schema ./tmp_package
+cp ../$schema ./tmp_package
 
 # Add latest git log entry
 git log -n 1 > tmp_package/git.log

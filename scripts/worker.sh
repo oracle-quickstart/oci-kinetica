@@ -33,14 +33,16 @@ echo "Create persist dir"
 mkdir -p /data/gpudb/persist
 chown -R gpudb:gpudb /data/gpudb
 
+echo "Stopping gpudb..."
+systemctl stop gpudb
+
 #
 # Exit early here if not first/head node?
 #
 
 if [ $(hostname) != "kinetica-worker-0" ]
 then
-   echo "Not running on head node, stopping gpudb, exiting early, waiting to join cluster"
-   systemctl stop gpudb
+   echo "Not running on head node, exiting early, waiting to join cluster"
    exit 0
 fi
 
@@ -148,10 +150,6 @@ echo "Sleeping 30s..."
 sleep 30s
 echo "Enabling/Starting gpudb..."
 service gpudb enable
-service gpudb start
-sleep 30s
-/etc/init.d/gpudb restart all
-sleep 30s
 /etc/init.d/gpudb restart all
 
 # AAW and k8
